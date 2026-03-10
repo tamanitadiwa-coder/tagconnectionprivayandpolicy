@@ -1,634 +1,187 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" style="background:#000!important;color-scheme:dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="color-scheme" content="dark"/>
   <title>Tag Connection — Admin</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html,body{background:#000000!important;color:#ffffff!important;color-scheme:dark!important;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#000000;--surface:#0D0D0D;--card:#111116;
+      --border:rgba(255,255,255,0.07);--accent:#A855F7;--accentDim:#7C3AED;
+      --accentSoft:rgba(168,85,247,0.12);--text:#FFFFFF;--textSub:#8E8E93;
+      --textMuted:#3A3A3C;--danger:#FF453A;--success:#30D158;--warning:#FFD60A;
+      --divider:rgba(255,255,255,0.06);--inputBg:#1C1C1E;
+    }
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh}
 
 ```
-:root {
-  --bg:        #000000;
-  --surface:   #0D0D0D;
-  --card:      #111116;
-  --border:    rgba(255,255,255,0.07);
-  --accent:    #A855F7;
-  --accentDim: #7C3AED;
-  --accentSoft:rgba(168,85,247,0.12);
-  --text:      #FFFFFF;
-  --textSub:   #8E8E93;
-  --textMuted: #3A3A3C;
-  --danger:    #FF453A;
-  --success:   #30D158;
-  --warning:   #FFD60A;
-  --divider:   rgba(255,255,255,0.06);
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  min-height: 100vh;
-}
-
-/* ── LOCK SCREEN ── */
-#lockScreen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.lock-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 40px 36px;
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.lock-dot {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 14px var(--accent);
-  display: inline-block;
-  margin-bottom: 16px;
-}
-
-.lock-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  margin-bottom: 6px;
-}
-
-.lock-sub {
-  color: var(--textSub);
-  font-size: 14px;
-  margin-bottom: 28px;
-}
-
-.lock-input {
-  width: 100%;
-  background: #1C1C1E;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 16px;
-  color: var(--text);
-  font-size: 15px;
-  letter-spacing: 3px;
-  outline: none;
-  transition: border-color 0.2s;
-  margin-bottom: 12px;
-}
-
-.lock-input:focus { border-color: var(--accent); }
-
-.lock-btn {
-  width: 100%;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
-  box-shadow: 0 6px 20px rgba(168,85,247,0.35);
-}
-
-.lock-btn:hover  { opacity: 0.88; }
-.lock-btn:active { transform: scale(0.97); }
-
-.lock-error {
-  color: var(--danger);
-  font-size: 13px;
-  margin-top: 10px;
-  min-height: 18px;
-}
-
-/* ── MAIN APP ── */
-#app { display: none; }
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 28px;
-  border-bottom: 1px solid var(--divider);
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 10;
-}
-
-.topbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.topbar-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 10px var(--accent);
-}
-
-.topbar-name {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-}
-
-.topbar-badge {
-  background: var(--accentSoft);
-  color: var(--accent);
-  border: 1px solid rgba(168,85,247,0.2);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.logout-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--textSub);
-  border-radius: 8px;
-  padding: 6px 14px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-}
-
-.logout-btn:hover { border-color: var(--danger); color: var(--danger); }
-
-.main {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 32px 24px 80px;
-}
-
-/* ── STATS ROW ── */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 32px;
-}
-
-.stat-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.stat-label {
-  color: var(--textSub);
-  font-size: 12px;
-  margin-top: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ── CREATE VOUCHER ── */
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  letter-spacing: -0.2px;
-}
-
-.create-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 12px;
-  align-items: end;
-}
-
-@media(max-width: 640px) {
-  .form-row { grid-template-columns: 1fr 1fr; }
-}
-
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-
-.form-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--textSub);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-.form-input, .form-select {
-  background: #1C1C1E;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 11px 14px;
-  color: var(--text);
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  width: 100%;
-}
-
-.form-input:focus, .form-select:focus { border-color: var(--accent); }
-
-.form-select option { background: #1C1C1E; }
-
-.create-btn {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 11px 22px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.15s, transform 0.1s;
-  box-shadow: 0 4px 14px rgba(168,85,247,0.3);
-}
-
-.create-btn:hover  { opacity: 0.88; }
-.create-btn:active { transform: scale(0.97); }
-
-.bulk-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--divider);
-  flex-wrap: wrap;
-}
-
-.bulk-label { color: var(--textSub); font-size: 13px; }
-
-.bulk-input {
-  background: #1C1C1E;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: var(--text);
-  font-size: 13px;
-  outline: none;
-  width: 70px;
-}
-
-.bulk-btn {
-  background: var(--accentSoft);
-  color: var(--accent);
-  border: 1px solid rgba(168,85,247,0.2);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-
-.bulk-btn:hover { opacity: 0.8; }
-
-/* ── FILTER BAR ── */
-.filter-bar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.filter-btn {
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--textSub);
-  border-radius: 20px;
-  padding: 6px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-  background: var(--accentSoft);
-  border-color: rgba(168,85,247,0.3);
-  color: var(--accent);
-}
-
-.search-input {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 6px 16px;
-  color: var(--text);
-  font-size: 13px;
-  outline: none;
-  margin-left: auto;
-  width: 200px;
-  transition: border-color 0.2s;
-}
-
-.search-input:focus { border-color: var(--accent); }
-
-/* ── TABLE ── */
-.table-wrap {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead tr {
-  border-bottom: 1px solid var(--divider);
-}
-
-th {
-  padding: 12px 18px;
-  text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--textSub);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-}
-
-tbody tr {
-  border-bottom: 1px solid var(--divider);
-  transition: background 0.12s;
-}
-
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: rgba(255,255,255,0.025); }
-
-td {
-  padding: 14px 18px;
-  font-size: 14px;
-  vertical-align: middle;
-}
-
-.code-cell {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent);
-  letter-spacing: 1px;
-}
-
-.copy-btn {
-  background: none;
-  border: none;
-  color: var(--textMuted);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: color 0.15s;
-}
-
-.copy-btn:hover { color: var(--accent); }
-
-/* Status badges */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.badge-active   { background: rgba(48,209,88,0.12);  color: var(--success); }
-.badge-redeemed { background: rgba(168,85,247,0.12); color: var(--accent);  }
-.badge-expired  { background: rgba(255,69,58,0.1);   color: var(--danger);  }
-
-.badge-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: currentColor;
-}
-
-/* Tier badges */
-.tier-free    { color: var(--textSub); }
-.tier-pro     { color: #60A5FA; }
-.tier-premium { color: var(--accent); }
-
-/* Action buttons */
-.action-btn {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--textSub);
-  border-radius: 6px;
-  padding: 4px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-right: 6px;
-}
-
-.action-btn:hover { border-color: var(--danger); color: var(--danger); }
-
-.action-btn.disable:hover { border-color: var(--warning); color: var(--warning); }
-
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--textSub);
-}
-
-.empty-icon  { font-size: 36px; margin-bottom: 12px; }
-.empty-title { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-.empty-sub   { font-size: 13px; }
-
-/* Loading */
-.loading {
-  text-align: center;
-  padding: 40px;
-  color: var(--textSub);
-  font-size: 14px;
-}
-
-/* Toast */
-#toast {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 12px 22px;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 500;
-  z-index: 999;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
-  opacity: 0;
-  white-space: nowrap;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-
-#toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-}
-
-/* Confirm dialog */
-#confirmOverlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px);
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
-}
-
-#confirmOverlay.show { display: flex; }
-
-.confirm-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 28px 28px 22px;
-  max-width: 340px;
-  width: 90%;
-  text-align: center;
-}
-
-.confirm-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-.confirm-sub   { color: var(--textSub); font-size: 14px; margin-bottom: 22px; }
-
-.confirm-btns  { display: flex; gap: 10px; }
-
-.confirm-cancel {
-  flex: 1; padding: 12px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid var(--border);
-  color: var(--textSub);
-  border-radius: 10px;
-  font-size: 14px; font-weight: 600;
-  cursor: pointer;
-}
-
-.confirm-delete {
-  flex: 1; padding: 12px;
-  background: rgba(255,69,58,0.15);
-  border: 1px solid rgba(255,69,58,0.3);
-  color: var(--danger);
-  border-radius: 10px;
-  font-size: 14px; font-weight: 700;
-  cursor: pointer;
-}
+/* LOCK */
+#lockScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+.lock-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:40px 36px;width:100%;max-width:400px;text-align:center}
+.lock-dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);display:inline-block;margin-bottom:16px}
+.lock-title{font-size:22px;font-weight:700;letter-spacing:-.3px;margin-bottom:6px;color:var(--text)}
+.lock-sub{color:var(--textSub);font-size:14px;margin-bottom:28px}
+.lock-input{width:100%;background:var(--inputBg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text);font-size:15px;letter-spacing:3px;outline:none;transition:border-color .2s;margin-bottom:12px}
+.lock-input:focus{border-color:var(--accent)}
+.lock-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(168,85,247,.35);transition:opacity .15s,transform .1s}
+.lock-btn:hover{opacity:.88}.lock-btn:active{transform:scale(.97)}
+.lock-error{color:var(--danger);font-size:13px;margin-top:10px;min-height:18px}
+
+/* APP */
+#app{display:none;background:var(--bg);min-height:100vh}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--divider);position:sticky;top:0;background:var(--bg);z-index:10}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.topbar-name{font-size:16px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text)}
+.topbar-badge{background:var(--accentSoft);color:var(--accent);border:1px solid rgba(168,85,247,.2);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600}
+.topbar-actions{display:flex;gap:8px}
+.top-btn{background:transparent;border:1px solid var(--border);color:var(--textSub);border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;transition:all .2s}
+.top-btn:hover{border-color:var(--accent);color:var(--accent)}
+.top-btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+
+.main{max-width:980px;margin:0 auto;padding:32px 24px 80px}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:32px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.stat-value{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.stat-label{color:var(--textSub);font-size:12px;margin-top:4px;text-transform:uppercase;letter-spacing:.5px}
+
+/* SECTION */
+.section-title{font-size:18px;font-weight:700;margin-bottom:14px;letter-spacing:-.2px;color:var(--text)}
+
+/* CREATE */
+.create-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:32px}
+.form-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end}
+@media(max-width:640px){.form-row{grid-template-columns:1fr 1fr}}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:11px;font-weight:600;color:var(--textSub);text-transform:uppercase;letter-spacing:.6px}
+.form-input,.form-select{background:var(--inputBg);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;width:100%}
+.form-input:focus,.form-select:focus{border-color:var(--accent)}
+.form-select option{background:var(--inputBg);color:var(--text)}
+.create-btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(168,85,247,.3);transition:opacity .15s,transform .1s}
+.create-btn:hover{opacity:.88}.create-btn:active{transform:scale(.97)}
+.bulk-row{display:flex;align-items:center;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--divider);flex-wrap:wrap}
+.bulk-label{color:var(--textSub);font-size:13px}
+.bulk-input{background:var(--inputBg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;width:70px}
+.bulk-btn{background:var(--accentSoft);color:var(--accent);border:1px solid rgba(168,85,247,.2);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.bulk-btn:hover{opacity:.8}
+
+/* FILTER */
+.filter-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.filter-btn{background:var(--card);border:1px solid var(--border);color:var(--textSub);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.filter-btn.active,.filter-btn:hover{background:var(--accentSoft);border-color:rgba(168,85,247,.3);color:var(--accent)}
+.search-input{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:6px 16px;color:var(--text);font-size:13px;outline:none;margin-left:auto;width:200px;transition:border-color .2s}
+.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--textMuted)}
+
+/* TABLE */
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead tr{border-bottom:1px solid var(--divider)}
+th{padding:12px 18px;text-align:left;font-size:11px;font-weight:600;color:var(--textSub);text-transform:uppercase;letter-spacing:.6px}
+tbody tr{border-bottom:1px solid var(--divider);transition:background .12s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+td{padding:14px 18px;font-size:14px;vertical-align:middle;color:var(--text)}
+.code-cell{font-family:'SF Mono','Fira Code',monospace;font-size:13px;font-weight:600;color:var(--accent);letter-spacing:1px}
+.copy-btn{background:none;border:none;color:var(--textMuted);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:4px;transition:color .15s}
+.copy-btn:hover{color:var(--accent)}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-active{background:rgba(48,209,88,.12);color:var(--success)}
+.badge-redeemed{background:rgba(168,85,247,.12);color:var(--accent)}
+.badge-expired{background:rgba(255,69,58,.1);color:var(--danger)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.tier-free{color:var(--textSub)}.tier-pro{color:#60A5FA}.tier-premium{color:var(--accent)}
+.action-btn{background:none;border:1px solid var(--border);color:var(--textSub);border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer;transition:all .15s;margin-right:6px}
+.action-btn:hover{border-color:var(--danger);color:var(--danger)}
+.action-btn.disable:hover{border-color:var(--warning);color:var(--warning)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--textSub)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.loading{text-align:center;padding:40px;color:var(--textSub);font-size:14px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;width:90%;max-width:380px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.modal-sub{color:var(--textSub);font-size:13px;margin-bottom:20px}
+.modal-btns{display:flex;gap:10px;margin-top:20px}
+.modal-cancel{flex:1;padding:12px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--textSub);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
+.modal-confirm{flex:1;padding:12px;background:var(--accent);border:none;color:#fff;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(168,85,247,.3)}
+.modal-confirm.danger{background:rgba(255,69,58,.15);color:var(--danger);box-shadow:none}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card);border:1px solid var(--border);color:var(--text);padding:12px 22px;border-radius:30px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 ```
 
   </style>
 </head>
 <body>
 
-<!-- ── LOCK SCREEN ── -->
+<!-- LOCK SCREEN -->
 
 <div id="lockScreen">
   <div class="lock-card">
     <div class="lock-dot"></div>
     <div class="lock-title">Tag Connection Admin</div>
     <div class="lock-sub">Enter your admin password to continue</div>
-    <input
-      id="pwInput"
-      class="lock-input"
-      type="password"
-      placeholder="••••••••"
-      onkeydown="if(event.key==='Enter')checkPassword()"
-      autocomplete="current-password"
-    />
+    <input id="pwInput" class="lock-input" type="password" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPassword()" autocomplete="current-password"/>
     <button class="lock-btn" onclick="checkPassword()">Continue →</button>
     <div id="lockError" class="lock-error"></div>
   </div>
 </div>
 
-<!-- ── MAIN APP ── -->
+<!-- MAIN APP -->
 
 <div id="app">
-
-  <!-- Top bar -->
-
   <div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-dot"></div>
       <span class="topbar-name">Tag Connection</span>
       <span class="topbar-badge">Admin</span>
     </div>
-    <button class="logout-btn" onclick="logout()">Lock</button>
+    <div class="topbar-actions">
+      <button class="top-btn" onclick="openChangePassword()">Change Password</button>
+      <button class="top-btn danger" onclick="logout()">Lock</button>
+    </div>
   </div>
 
   <div class="main">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="statTotal" style="color:var(--text)">—</div>
+        <div class="stat-label">Total codes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statActive" style="color:var(--success)">—</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statRedeemed" style="color:var(--accent)">—</div>
+        <div class="stat-label">Redeemed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statExpired" style="color:var(--danger)">—</div>
+        <div class="stat-label">Expired</div>
+      </div>
+    </div>
 
 ```
-<!-- Stats -->
-<div class="stats-row">
-  <div class="stat-card">
-    <div class="stat-value" id="statTotal" style="color:var(--text)">—</div>
-    <div class="stat-label">Total codes</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statActive" style="color:var(--success)">—</div>
-    <div class="stat-label">Active</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statRedeemed" style="color:var(--accent)">—</div>
-    <div class="stat-label">Redeemed</div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-value" id="statExpired" style="color:var(--danger)">—</div>
-    <div class="stat-label">Expired</div>
-  </div>
-</div>
-
-<!-- Create voucher -->
 <div class="section-title">Create Voucher</div>
 <div class="create-card">
   <div class="form-row">
     <div class="form-group">
       <label class="form-label">Code</label>
-      <input
-        id="codeInput"
-        class="form-input"
-        type="text"
-        placeholder="e.g. LAUNCH50"
-        style="text-transform:uppercase"
-        oninput="this.value=this.value.toUpperCase().replace(/\s/g,'')"
-      />
+      <input id="codeInput" class="form-input" type="text" placeholder="e.g. LAUNCH50"
+        oninput="this.value=this.value.toUpperCase().replace(/\s/g,'')"/>
     </div>
     <div class="form-group">
       <label class="form-label">Tier</label>
@@ -640,15 +193,13 @@ td {
     </div>
     <div class="form-group">
       <label class="form-label">Expires (optional)</label>
-      <input id="expiryInput" class="form-input" type="date" />
+      <input id="expiryInput" class="form-input" type="date"/>
     </div>
     <button class="create-btn" onclick="createVoucher()">+ Create</button>
   </div>
-
-  <!-- Bulk generate -->
   <div class="bulk-row">
     <span class="bulk-label">Bulk generate:</span>
-    <input id="bulkCount" class="bulk-input" type="number" min="1" max="100" value="10" />
+    <input id="bulkCount" class="bulk-input" type="number" min="1" max="100" value="10"/>
     <select id="bulkTier" class="form-select" style="width:120px;padding:8px 12px">
       <option value="Free">Free</option>
       <option value="Pro">Pro</option>
@@ -658,33 +209,20 @@ td {
   </div>
 </div>
 
-<!-- Voucher table -->
 <div class="section-title">All Vouchers</div>
-
 <div class="filter-bar">
   <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
   <button class="filter-btn" onclick="setFilter('active',this)">Active</button>
   <button class="filter-btn" onclick="setFilter('redeemed',this)">Redeemed</button>
   <button class="filter-btn" onclick="setFilter('expired',this)">Expired</button>
-  <input
-    class="search-input"
-    type="text"
-    placeholder="Search code…"
-    oninput="searchFilter(this.value)"
-  />
+  <input class="search-input" type="text" placeholder="Search code…" oninput="searchFilter(this.value)"/>
 </div>
-
 <div class="table-wrap">
   <table>
     <thead>
       <tr>
-        <th>Code</th>
-        <th>Tier</th>
-        <th>Status</th>
-        <th>Redeemed by</th>
-        <th>Expires</th>
-        <th>Created</th>
-        <th>Actions</th>
+        <th>Code</th><th>Tier</th><th>Status</th>
+        <th>Redeemed by</th><th>Expires</th><th>Created</th><th>Actions</th>
       </tr>
     </thead>
     <tbody id="voucherTableBody">
@@ -697,32 +235,54 @@ td {
   </div>
 </div>
 
-<!-- Toast -->
+<!-- Change Password Modal -->
 
-<div id="toast"></div>
-
-<!-- Confirm dialog -->
-
-<div id="confirmOverlay">
-  <div class="confirm-card">
-    <div class="confirm-title" id="confirmTitle">Delete voucher?</div>
-    <div class="confirm-sub" id="confirmSub">This action cannot be undone.</div>
-    <div class="confirm-btns">
-      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="confirm-delete" id="confirmOkBtn">Delete</button>
+<div class="modal-overlay" id="changePwModal">
+  <div class="modal-card">
+    <div class="modal-title">Change Password</div>
+    <div class="modal-sub">Enter your current password then set a new one.</div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">Current Password</label>
+      <input id="currentPwInput" class="form-input" type="password" placeholder="Current password"/>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label class="form-label">New Password</label>
+      <input id="newPwInput" class="form-input" type="password" placeholder="New password"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirm New Password</label>
+      <input id="confirmPwInput" class="form-input" type="password" placeholder="Confirm new password"/>
+    </div>
+    <div id="changePwError" style="color:var(--danger);font-size:13px;margin-top:8px;min-height:18px"></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeChangePassword()">Cancel</button>
+      <button class="modal-confirm" onclick="saveNewPassword()">Save Password</button>
     </div>
   </div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Confirm Delete Modal -->
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <div class="modal-title" id="confirmTitle">Delete voucher?</div>
+    <div class="modal-sub" id="confirmSub">This cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="modal-confirm danger" id="confirmOkBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
 
 <script type="module">
-  import { initializeApp }                          from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
-  import { getFirestore, collection, doc, addDoc,
-           onSnapshot, updateDoc, deleteDoc,
-           serverTimestamp, query, orderBy }        from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
+  import {
+    getFirestore, collection, doc, setDoc, getDoc,
+    onSnapshot, updateDoc, deleteDoc, serverTimestamp, query, orderBy
+  } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'
 
-  // ── Firebase config ──────────────────────────────────────────
   const firebaseConfig = {
     apiKey:            'AIzaSyCmhGCfl7KiBU5IF_t2WhAskDlEHoZsonI',
     authDomain:        'my-awsom-tagconnect.firebaseapp.com',
@@ -736,13 +296,32 @@ td {
   const app = initializeApp(firebaseConfig)
   const db  = getFirestore(app)
 
-  // ── Password ─────────────────────────────────────────────────
-  // Change this to your own admin password
-  const ADMIN_PASSWORD = 'Tamani1738!'
+  // ── Default password (stored in Firestore so it can be changed) ──
+  const DEFAULT_PASSWORD  = 'Tamani1738'
+  const ADMIN_CONFIG_DOC  = 'adminConfig'
+  const ADMIN_CONFIG_COL  = 'admin'
 
-  window.checkPassword = () => {
+  let currentPassword = DEFAULT_PASSWORD
+
+  // Load password from Firestore on page load
+  async function loadAdminConfig() {
+    try {
+      const snap = await getDoc(doc(db, ADMIN_CONFIG_COL, ADMIN_CONFIG_DOC))
+      if (snap.exists() && snap.data().password) {
+        currentPassword = snap.data().password
+      }
+    } catch (e) {
+      console.log('Using default password')
+    }
+  }
+
+  loadAdminConfig()
+
+  // ── Password check ──
+  window.checkPassword = async () => {
+    await loadAdminConfig()
     const val = document.getElementById('pwInput').value
-    if (val === ADMIN_PASSWORD) {
+    if (val === currentPassword) {
       document.getElementById('lockScreen').style.display = 'none'
       document.getElementById('app').style.display = 'block'
       startListening()
@@ -760,202 +339,207 @@ td {
     document.getElementById('pwInput').value = ''
   }
 
-  // ── State ────────────────────────────────────────────────────
-  let allVouchers   = []
-  let activeFilter  = 'all'
-  let searchQuery   = ''
-  let confirmAction = null
-
-  // ── Real-time listener ───────────────────────────────────────
-  function startListening() {
-    const q = query(collection(db, 'vouchers'), orderBy('createdAt', 'desc'))
-    onSnapshot(q, snap => {
-      allVouchers = snap.docs.map(d => ({ id: d.id, ...d.data() }))
-      updateStats()
-      renderTable()
-    })
+  // ── Change password ──
+  window.openChangePassword = () => {
+    document.getElementById('currentPwInput').value = ''
+    document.getElementById('newPwInput').value = ''
+    document.getElementById('confirmPwInput').value = ''
+    document.getElementById('changePwError').textContent = ''
+    document.getElementById('changePwModal').classList.add('show')
   }
 
-  // ── Stats ────────────────────────────────────────────────────
+  window.closeChangePassword = () => {
+    document.getElementById('changePwModal').classList.remove('show')
+  }
+
+  window.saveNewPassword = async () => {
+    const current = document.getElementById('currentPwInput').value
+    const newPw   = document.getElementById('newPwInput').value
+    const confirm = document.getElementById('confirmPwInput').value
+    const errEl   = document.getElementById('changePwError')
+
+    if (current !== currentPassword) { errEl.textContent = 'Current password is incorrect.'; return }
+    if (newPw.length < 6)            { errEl.textContent = 'New password must be at least 6 characters.'; return }
+    if (newPw !== confirm)           { errEl.textContent = 'Passwords do not match.'; return }
+
+    try {
+      await setDoc(doc(db, ADMIN_CONFIG_COL, ADMIN_CONFIG_DOC), { password: newPw }, { merge: true })
+      currentPassword = newPw
+      closeChangePassword()
+      showToast('✓ Password updated successfully')
+    } catch (e) {
+      errEl.textContent = 'Error saving password. Try again.'
+    }
+  }
+
+  // ── State ──
+  let allVouchers  = []
+  let activeFilter = 'all'
+  let searchQuery  = ''
+  let confirmAction = null
+
+  // ── Real-time listener ──
+  function startListening() {
+    try {
+      const q = query(collection(db, 'vouchers'), orderBy('createdAt', 'desc'))
+      onSnapshot(q, snap => {
+        allVouchers = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        updateStats()
+        renderTable()
+      }, err => {
+        console.error('Snapshot error:', err)
+        document.getElementById('voucherTableBody').innerHTML =
+          `<tr><td colspan="7"><div class="empty-state">
+            <div class="empty-icon">⚠️</div>
+            <div class="empty-title">Could not load vouchers</div>
+            <div class="empty-sub">Check Firestore rules — allow read/write for admin collection</div>
+          </div></td></tr>`
+      })
+    } catch(e) {
+      console.error(e)
+    }
+  }
+
+  // ── Stats ──
   function updateStats() {
-    const now     = Date.now()
-    const total   = allVouchers.length
+    const now      = Date.now()
+    const total    = allVouchers.length
     const redeemed = allVouchers.filter(v => v.redeemed).length
     const expired  = allVouchers.filter(v => !v.redeemed && v.expiresAt && v.expiresAt.toMillis() < now).length
     const active   = total - redeemed - expired
-
     document.getElementById('statTotal').textContent    = total
     document.getElementById('statActive').textContent   = active
     document.getElementById('statRedeemed').textContent = redeemed
     document.getElementById('statExpired').textContent  = expired
   }
 
-  // ── Render table ─────────────────────────────────────────────
+  // ── Render table ──
   function renderTable() {
-    const now      = Date.now()
-    let filtered   = allVouchers
+    const now    = Date.now()
+    let filtered = [...allVouchers]
 
-    if (activeFilter === 'active') {
-      filtered = filtered.filter(v => !v.redeemed && (!v.expiresAt || v.expiresAt.toMillis() > now))
-    } else if (activeFilter === 'redeemed') {
-      filtered = filtered.filter(v => v.redeemed)
-    } else if (activeFilter === 'expired') {
-      filtered = filtered.filter(v => !v.redeemed && v.expiresAt && v.expiresAt.toMillis() < now)
-    }
-
-    if (searchQuery) {
-      filtered = filtered.filter(v => v.id.includes(searchQuery.toUpperCase()))
-    }
+    if (activeFilter === 'active')   filtered = filtered.filter(v => !v.redeemed && (!v.expiresAt || v.expiresAt.toMillis() > now))
+    if (activeFilter === 'redeemed') filtered = filtered.filter(v => v.redeemed)
+    if (activeFilter === 'expired')  filtered = filtered.filter(v => !v.redeemed && v.expiresAt && v.expiresAt.toMillis() < now)
+    if (searchQuery) filtered = filtered.filter(v => v.id.includes(searchQuery.toUpperCase()))
 
     const tbody = document.getElementById('voucherTableBody')
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `
-        <tr><td colspan="7">
-          <div class="empty-state">
-            <div class="empty-icon">🎟</div>
-            <div class="empty-title">No vouchers found</div>
-            <div class="empty-sub">Create your first voucher above</div>
-          </div>
-        </td></tr>`
+      tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state">
+        <div class="empty-icon">🎟</div>
+        <div class="empty-title">No vouchers found</div>
+        <div class="empty-sub">Create your first voucher above</div>
+      </div></td></tr>`
       return
     }
 
     tbody.innerHTML = filtered.map(v => {
-      const isExpired = !v.redeemed && v.expiresAt && v.expiresAt.toMillis() < now
-      const status    = v.redeemed ? 'redeemed' : isExpired ? 'expired' : 'active'
-      const statusLabel = { active: 'Active', redeemed: 'Redeemed', expired: 'Expired' }[status]
-      const tierClass   = { Free: 'tier-free', Pro: 'tier-pro', Premium: 'tier-premium' }[v.tier] ?? ''
-
+      const isExpired   = !v.redeemed && v.expiresAt && v.expiresAt.toMillis() < now
+      const status      = v.redeemed ? 'redeemed' : isExpired ? 'expired' : 'active'
+      const statusLabel = { active:'Active', redeemed:'Redeemed', expired:'Expired' }[status]
+      const tierClass   = { Free:'tier-free', Pro:'tier-pro', Premium:'tier-premium' }[v.tier] ?? ''
       const createdStr  = v.createdAt  ? new Date(v.createdAt.toMillis()).toLocaleDateString()  : '—'
-      const expiryStr   = v.expiresAt  ? new Date(v.expiresAt.toMillis()).toLocaleDateString()  : '—'
+      const expiryStr   = v.expiresAt  ? new Date(v.expiresAt.toMillis()).toLocaleDateString()  : 'Never'
       const redeemedBy  = v.redeemedBy ?? '—'
 
-      return `
-        <tr>
-          <td>
-            <span class="code-cell">${v.id}</span>
-            <button class="copy-btn" onclick="copyCode('${v.id}')" title="Copy">⎘</button>
-          </td>
-          <td><span class="${tierClass}">${v.tier ?? '—'}</span></td>
-          <td>
-            <span class="badge badge-${status}">
-              <span class="badge-dot"></span>${statusLabel}
-            </span>
-          </td>
-          <td style="color:var(--textSub);font-size:13px">${redeemedBy}</td>
-          <td style="color:var(--textSub);font-size:13px">${expiryStr}</td>
-          <td style="color:var(--textSub);font-size:13px">${createdStr}</td>
-          <td>
-            ${status === 'active' ? `<button class="action-btn disable" onclick="disableVoucher('${v.id}')">Disable</button>` : ''}
-            <button class="action-btn" onclick="confirmDelete('${v.id}')">Delete</button>
-          </td>
-        </tr>`
+      return `<tr>
+        <td>
+          <span class="code-cell">${v.id}</span>
+          <button class="copy-btn" onclick="copyCode('${v.id}')" title="Copy">⎘</button>
+        </td>
+        <td><span class="${tierClass}">${v.tier ?? '—'}</span></td>
+        <td><span class="badge badge-${status}"><span class="badge-dot"></span>${statusLabel}</span></td>
+        <td style="color:var(--textSub);font-size:13px">${redeemedBy}</td>
+        <td style="color:var(--textSub);font-size:13px">${expiryStr}</td>
+        <td style="color:var(--textSub);font-size:13px">${createdStr}</td>
+        <td>
+          ${status==='active' ? `<button class="action-btn disable" onclick="disableVoucher('${v.id}')">Disable</button>` : ''}
+          <button class="action-btn" onclick="confirmDelete('${v.id}')">Delete</button>
+        </td>
+      </tr>`
     }).join('')
   }
 
-  // ── Create voucher ───────────────────────────────────────────
+  // ── Create voucher ──
   window.createVoucher = async () => {
     const code   = document.getElementById('codeInput').value.trim().toUpperCase()
     const tier   = document.getElementById('tierSelect').value
     const expiry = document.getElementById('expiryInput').value
-
-    if (!code) { showToast('⚠ Enter a code first'); return }
-    if (!/^[A-Z0-9]+$/.test(code)) { showToast('⚠ Code must be letters and numbers only'); return }
-
+    if (!code)                        { showToast('⚠ Enter a code first'); return }
+    if (!/^[A-Z0-9]+$/.test(code))   { showToast('⚠ Letters and numbers only'); return }
     try {
-      const data = {
-        tier,
-        redeemed:   false,
-        redeemedBy: null,
-        createdAt:  serverTimestamp(),
-        expiresAt:  expiry ? new Date(expiry) : null,
-      }
-
-      // Use the code itself as the document ID for easy lookup
-      const { setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
-      await setDoc(doc(db, 'vouchers', code), data)
-
+      await setDoc(doc(db, 'vouchers', code), {
+        tier, redeemed: false, redeemedBy: null,
+        createdAt: serverTimestamp(),
+        expiresAt: expiry ? new Date(expiry) : null,
+      })
       document.getElementById('codeInput').value  = ''
       document.getElementById('expiryInput').value = ''
       showToast(`✓ Voucher ${code} created`)
-    } catch (e) {
-      showToast('Error creating voucher')
-      console.error(e)
-    }
+    } catch(e) { showToast('Error — check Firestore rules'); console.error(e) }
   }
 
-  // ── Bulk generate ────────────────────────────────────────────
+  // ── Bulk generate ──
   window.bulkGenerate = async () => {
-    const count = parseInt(document.getElementById('bulkCount').value) || 10
+    const count = Math.min(parseInt(document.getElementById('bulkCount').value)||10, 100)
     const tier  = document.getElementById('bulkTier').value
-
-    if (count > 100) { showToast('Max 100 at a time'); return }
-
-    const { setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js')
-
     let created = 0
     for (let i = 0; i < count; i++) {
-      const code = generateCode()
       try {
+        const code = generateCode()
         await setDoc(doc(db, 'vouchers', code), {
-          tier,
-          redeemed:   false,
-          redeemedBy: null,
-          createdAt:  serverTimestamp(),
-          expiresAt:  null,
+          tier, redeemed: false, redeemedBy: null,
+          createdAt: serverTimestamp(), expiresAt: null,
         })
         created++
       } catch {}
     }
-
     showToast(`✓ ${created} ${tier} codes generated`)
   }
 
   function generateCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-    let code = ''
+    let c = ''
     for (let i = 0; i < 8; i++) {
-      if (i === 4) code += '-'
-      code += chars[Math.floor(Math.random() * chars.length)]
+      if (i === 4) c += '-'
+      c += chars[Math.floor(Math.random() * chars.length)]
     }
-    return code
+    return c
   }
 
-  // ── Disable voucher ──────────────────────────────────────────
-  window.disableVoucher = async (code) => {
+  // ── Disable ──
+  window.disableVoucher = async code => {
     try {
-      await updateDoc(doc(db, 'vouchers', code), { redeemed: true, redeemedBy: 'disabled-by-admin' })
+      await updateDoc(doc(db,'vouchers',code), { redeemed:true, redeemedBy:'disabled-by-admin' })
       showToast('Voucher disabled')
-    } catch { showToast('Error disabling voucher') }
+    } catch { showToast('Error disabling') }
   }
 
-  // ── Delete voucher ───────────────────────────────────────────
-  window.confirmDelete = (code) => {
+  // ── Delete ──
+  window.confirmDelete = code => {
     confirmAction = async () => {
-      try {
-        await deleteDoc(doc(db, 'vouchers', code))
-        showToast(`Deleted ${code}`)
-      } catch { showToast('Error deleting') }
+      try { await deleteDoc(doc(db,'vouchers',code)); showToast(`Deleted ${code}`) }
+      catch { showToast('Error deleting') }
       closeConfirm()
     }
     document.getElementById('confirmTitle').textContent = `Delete ${code}?`
     document.getElementById('confirmSub').textContent   = 'This voucher will be permanently removed.'
     document.getElementById('confirmOkBtn').onclick     = confirmAction
-    document.getElementById('confirmOverlay').classList.add('show')
+    document.getElementById('confirmModal').classList.add('show')
   }
 
   window.closeConfirm = () => {
-    document.getElementById('confirmOverlay').classList.remove('show')
+    document.getElementById('confirmModal').classList.remove('show')
     confirmAction = null
   }
 
-  // ── Copy code ────────────────────────────────────────────────
-  window.copyCode = (code) => {
+  // ── Copy ──
+  window.copyCode = code => {
     navigator.clipboard.writeText(code).then(() => showToast(`Copied ${code}`))
   }
 
-  // ── Filters ──────────────────────────────────────────────────
+  // ── Filters ──
   window.setFilter = (filter, btn) => {
     activeFilter = filter
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'))
@@ -963,12 +547,9 @@ td {
     renderTable()
   }
 
-  window.searchFilter = (val) => {
-    searchQuery = val
-    renderTable()
-  }
+  window.searchFilter = val => { searchQuery = val; renderTable() }
 
-  // ── Toast ────────────────────────────────────────────────────
+  // ── Toast ──
   function showToast(msg) {
     const t = document.getElementById('toast')
     t.textContent = msg
