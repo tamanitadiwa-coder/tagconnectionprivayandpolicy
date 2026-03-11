@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en" style="background:#000;color-scheme:dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#000000"/>
+  <title>Send an anonymous message — Tag Connection</title>
+  <style>
+    html,body{background:#000!important;color:#fff;color-scheme:dark;margin:0;padding:0;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --bg:#000;
+      --glow:rgba(168,85,247,0.14);
+      --glowStrong:rgba(168,85,247,0.3);
+      --accent:#A855F7;
+      --inputBorder:rgba(168,85,247,0.22);
+      --inputBorderFocus:rgba(168,85,247,0.65);
+      --inputBg:rgba(255,255,255,0.03);
+      --text:#FFFFFF;
+      --textSub:#8E8E93;
+      --textMuted:#3A3A3C;
+      --divider:rgba(255,255,255,0.06);
+      --cardBorder:rgba(255,255,255,0.07);
+      --T:0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── ALL FEELING THEMES ── */
+    /* Hearts */
+    body.t-soft        {--glow:rgba(255,182,193,0.13);--glowStrong:rgba(255,182,193,0.3);--accent:#FFB6C1;--inputBorder:rgba(255,182,193,0.28);--inputBorderFocus:rgba(255,182,193,0.7)}
+    body.t-love        {--glow:rgba(239,68,68,0.14);--glowStrong:rgba(239,68,68,0.32);--accent:#EF4444;--inputBorder:rgba(239,68,68,0.28);--inputBorderFocus:rgba(239,68,68,0.7)}
+    body.t-deep        {--glow:rgba(147,51,234,0.15);--glowStrong:rgba(147,51,234,0.35);--accent:#9333EA;--inputBorder:rgba(147,51,234,0.28);--inputBorderFocus:rgba(147,51,234,0.7)}
+    body.t-broken      {--glow:rgba(100,116,139,0.14);--glowStrong:rgba(100,116,139,0.3);--accent:#94A3B8;--inputBorder:rgba(100,116,139,0.28);--inputBorderFocus:rgba(148,163,184,0.6)}
+    body.t-crush       {--glow:rgba(244,114,182,0.14);--glowStrong:rgba(244,114,182,0.32);--accent:#F472B6;--inputBorder:rgba(244,114,182,0.28);--inputBorderFocus:rgba(244,114,182,0.7)}
+    body.t-missing     {--glow:rgba(99,102,241,0.14);--glowStrong:rgba(99,102,241,0.3);--accent:#6366F1;--inputBorder:rgba(99,102,241,0.28);--inputBorderFocus:rgba(99,102,241,0.7)}
+    /* Weather */
+    body.t-sunny       {--glow:rgba(251,191,36,0.14);--glowStrong:rgba(251,191,36,0.3);--accent:#FBBF24;--inputBorder:rgba(251,191,36,0.28);--inputBorderFocus:rgba(251,191,36,0.7)}
+    body.t-rainy       {--glow:rgba(96,165,250,0.14);--glowStrong:rgba(96,165,250,0.3);--accent:#60A5FA;--inputBorder:rgba(96,165,250,0.28);--inputBorderFocus:rgba(96,165,250,0.7)}
+    body.t-storm       {--glow:rgba(139,92,246,0.15);--glowStrong:rgba(139,92,246,0.35);--accent:#8B5CF6;--inputBorder:rgba(139,92,246,0.28);--inputBorderFocus:rgba(139,92,246,0.7)}
+    body.t-night       {--glow:rgba(55,48,163,0.18);--glowStrong:rgba(55,48,163,0.35);--accent:#6D64E8;--inputBorder:rgba(109,100,232,0.28);--inputBorderFocus:rgba(109,100,232,0.65)}
+    body.t-cloudy      {--glow:rgba(148,163,184,0.12);--glowStrong:rgba(148,163,184,0.25);--accent:#94A3B8;--inputBorder:rgba(148,163,184,0.25);--inputBorderFocus:rgba(148,163,184,0.55)}
+    body.t-snow        {--glow:rgba(186,230,253,0.13);--glowStrong:rgba(186,230,253,0.28);--accent:#BAE6FD;--inputBorder:rgba(186,230,253,0.25);--inputBorderFocus:rgba(186,230,253,0.6)}
+    /* Nature */
+    body.t-blossom     {--glow:rgba(249,168,212,0.13);--glowStrong:rgba(249,168,212,0.3);--accent:#F9A8D4;--inputBorder:rgba(249,168,212,0.28);--inputBorderFocus:rgba(249,168,212,0.65)}
+    body.t-ocean       {--glow:rgba(6,182,212,0.14);--glowStrong:rgba(6,182,212,0.3);--accent:#06B6D4;--inputBorder:rgba(6,182,212,0.28);--inputBorderFocus:rgba(6,182,212,0.65)}
+    body.t-forest      {--glow:rgba(34,197,94,0.13);--glowStrong:rgba(34,197,94,0.28);--accent:#22C55E;--inputBorder:rgba(34,197,94,0.25);--inputBorderFocus:rgba(34,197,94,0.65)}
+    body.t-spiral      {--glow:rgba(168,85,247,0.15);--glowStrong:rgba(168,85,247,0.35);--accent:#A855F7;--inputBorder:rgba(168,85,247,0.28);--inputBorderFocus:rgba(168,85,247,0.7)}
+    body.t-mountain    {--glow:rgba(120,113,108,0.14);--glowStrong:rgba(120,113,108,0.3);--accent:#78716C;--inputBorder:rgba(120,113,108,0.28);--inputBorderFocus:rgba(168,162,158,0.55)}
+    body.t-desert      {--glow:rgba(217,119,6,0.14);--glowStrong:rgba(217,119,6,0.3);--accent:#D97706;--inputBorder:rgba(217,119,6,0.28);--inputBorderFocus:rgba(217,119,6,0.65)}
+    /* Fire & Ice */
+    body.t-fire        {--glow:rgba(249,115,22,0.15);--glowStrong:rgba(249,115,22,0.35);--accent:#F97316;--inputBorder:rgba(249,115,22,0.3);--inputBorderFocus:rgba(249,115,22,0.7)}
+    body.t-ice         {--glow:rgba(147,197,253,0.13);--glowStrong:rgba(147,197,253,0.28);--accent:#93C5FD;--inputBorder:rgba(147,197,253,0.25);--inputBorderFocus:rgba(147,197,253,0.65)}
+    body.t-volcano     {--glow:rgba(220,38,38,0.16);--glowStrong:rgba(220,38,38,0.38);--accent:#DC2626;--inputBorder:rgba(220,38,38,0.3);--inputBorderFocus:rgba(220,38,38,0.7)}
+    body.t-frost       {--glow:rgba(224,242,254,0.1);--glowStrong:rgba(224,242,254,0.22);--accent:#E0F2FE;--inputBorder:rgba(224,242,254,0.2);--inputBorderFocus:rgba(224,242,254,0.5)}
+    /* Cosmic */
+    body.t-star        {--glow:rgba(253,224,71,0.13);--glowStrong:rgba(253,224,71,0.28);--accent:#FDE047;--inputBorder:rgba(253,224,71,0.25);--inputBorderFocus:rgba(253,224,71,0.65)}
+    body.t-galaxy      {--glow:rgba(109,40,217,0.16);--glowStrong:rgba(109,40,217,0.38);--accent:#6D28D9;--inputBorder:rgba(109,40,217,0.3);--inputBorderFocus:rgba(109,40,217,0.7)}
+    body.t-moon        {--glow:rgba(196,181,253,0.13);--glowStrong:rgba(196,181,253,0.3);--accent:#C4B5FD;--inputBorder:rgba(196,181,253,0.25);--inputBorderFocus:rgba(196,181,253,0.65)}
+    body.t-comet       {--glow:rgba(251,146,60,0.14);--glowStrong:rgba(251,146,60,0.3);--accent:#FB923C;--inputBorder:rgba(251,146,60,0.28);--inputBorderFocus:rgba(251,146,60,0.65)}
+    body.t-nebula      {--glow:rgba(236,72,153,0.14);--glowStrong:rgba(236,72,153,0.32);--accent:#EC4899;--inputBorder:rgba(236,72,153,0.28);--inputBorderFocus:rgba(236,72,153,0.7)}
+    /* Vibes */
+    body.t-music       {--glow:rgba(52,211,153,0.14);--glowStrong:rgba(52,211,153,0.3);--accent:#34D399;--inputBorder:rgba(52,211,153,0.28);--inputBorderFocus:rgba(52,211,153,0.65)}
+    body.t-energy      {--glow:rgba(250,204,21,0.14);--glowStrong:rgba(250,204,21,0.3);--accent:#FACC15;--inputBorder:rgba(250,204,21,0.28);--inputBorderFocus:rgba(250,204,21,0.65)}
+    body.t-luxury      {--glow:rgba(167,139,250,0.14);--glowStrong:rgba(167,139,250,0.3);--accent:#A78BFA;--inputBorder:rgba(167,139,250,0.28);--inputBorderFocus:rgba(167,139,250,0.7)}
+    body.t-party       {--glow:rgba(244,114,182,0.14);--glowStrong:rgba(244,114,182,0.3);--accent:#F472B6;--inputBorder:rgba(244,114,182,0.28);--inputBorderFocus:rgba(244,114,182,0.65)}
+    body.t-chill       {--glow:rgba(110,231,183,0.13);--glowStrong:rgba(110,231,183,0.28);--accent:#6EE7B7;--inputBorder:rgba(110,231,183,0.25);--inputBorderFocus:rgba(110,231,183,0.6)}
+    body.t-mystery     {--glow:rgba(71,85,105,0.15);--glowStrong:rgba(71,85,105,0.3);--accent:#475569;--inputBorder:rgba(71,85,105,0.28);--inputBorderFocus:rgba(148,163,184,0.55)}
+    /* Time of day */
+    body.t-sunrise     {--glow:rgba(251,146,60,0.14);--glowStrong:rgba(251,146,60,0.32);--accent:#FB923C;--inputBorder:rgba(251,146,60,0.28);--inputBorderFocus:rgba(251,146,60,0.65)}
+    body.t-midday      {--glow:rgba(250,204,21,0.13);--glowStrong:rgba(250,204,21,0.28);--accent:#FACC15;--inputBorder:rgba(250,204,21,0.25);--inputBorderFocus:rgba(250,204,21,0.65)}
+    body.t-golden      {--glow:rgba(234,179,8,0.14);--glowStrong:rgba(234,179,8,0.3);--accent:#EAB308;--inputBorder:rgba(234,179,8,0.28);--inputBorderFocus:rgba(234,179,8,0.65)}
+    body.t-midnight    {--glow:rgba(30,27,75,0.25);--glowStrong:rgba(49,46,129,0.4);--accent:#4338CA;--inputBorder:rgba(67,56,202,0.3);--inputBorderFocus:rgba(99,102,241,0.65)}
+    /* Seasons & Moods */
+    body.t-summer      {--glow:rgba(251,191,36,0.15);--glowStrong:rgba(251,191,36,0.35);--accent:#FBBF24;--inputBorder:rgba(251,191,36,0.3);--inputBorderFocus:rgba(251,191,36,0.7)}
+    body.t-winter      {--glow:rgba(147,197,253,0.13);--glowStrong:rgba(147,197,253,0.28);--accent:#93C5FD;--inputBorder:rgba(147,197,253,0.25);--inputBorderFocus:rgba(147,197,253,0.65)}
+    body.t-autumn      {--glow:rgba(217,119,6,0.15);--glowStrong:rgba(217,119,6,0.33);--accent:#D97706;--inputBorder:rgba(217,119,6,0.28);--inputBorderFocus:rgba(217,119,6,0.65)}
+    body.t-spring      {--glow:rgba(134,239,172,0.13);--glowStrong:rgba(134,239,172,0.28);--accent:#86EFAC;--inputBorder:rgba(134,239,172,0.25);--inputBorderFocus:rgba(134,239,172,0.6)}
+    body.t-happy       {--glow:rgba(253,224,71,0.14);--glowStrong:rgba(253,224,71,0.3);--accent:#FDE047;--inputBorder:rgba(253,224,71,0.25);--inputBorderFocus:rgba(253,224,71,0.65)}
+    body.t-sad         {--glow:rgba(99,102,241,0.14);--glowStrong:rgba(99,102,241,0.3);--accent:#6366F1;--inputBorder:rgba(99,102,241,0.28);--inputBorderFocus:rgba(99,102,241,0.65)}
+    body.t-rain        {--glow:rgba(96,165,250,0.14);--glowStrong:rgba(96,165,250,0.3);--accent:#60A5FA;--inputBorder:rgba(96,165,250,0.28);--inputBorderFocus:rgba(96,165,250,0.65)}
+    body.t-peaks       {--glow:rgba(120,113,108,0.14);--glowStrong:rgba(120,113,108,0.3);--accent:#A8A29E;--inputBorder:rgba(120,113,108,0.28);--inputBorderFocus:rgba(168,162,158,0.55)}
+
+    /* ── Background blobs ── */
+    .bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);transition:background var(--T),opacity var(--T)}
+    .blob-1{width:460px;height:460px;top:-140px;left:-100px;background:var(--glow);opacity:.85;animation:b1 7s ease-in-out infinite}
+    .blob-2{width:360px;height:360px;bottom:-100px;right:-80px;background:var(--glow);opacity:.55;animation:b2 9s ease-in-out infinite}
+    .blob-3{width:220px;height:220px;top:45%;left:50%;transform:translate(-50%,-50%);background:var(--glow);opacity:.22;animation:b3 11s ease-in-out infinite}
+    @keyframes b1{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-24px) scale(1.05)}}
+    @keyframes b2{0%,100%{transform:translateY(0)}50%{transform:translateY(20px)}}
+    @keyframes b3{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.14)}}
+
+    /* ── Floating particles ── */
+    .floating-particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .fparticle{position:absolute;opacity:0;animation:floatUp 14s ease-in-out infinite;font-size:16px}
+    @keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.7)}8%{opacity:.15}85%{opacity:.09}100%{opacity:0;transform:translateY(-105vh) scale(1.1)}}
+
+    /* ── Layout ── */
+    .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 20px 80px}
+
+    /* ── Brand ── */
+    .brand-bar{width:100%;max-width:500px;display:flex;align-items:center;justify-content:center;gap:8px;padding:28px 0 0}
+    .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);transition:background var(--T),box-shadow var(--T)}
+    .brand-name{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.38)}
+
+    /* ── Profile ── */
+    .profile-section{width:100%;max-width:500px;display:flex;flex-direction:column;align-items:center;padding:40px 0 26px;gap:11px}
+    .avatar-ring{width:86px;height:86px;border-radius:50%;border:2px solid var(--accent);box-shadow:0 0 28px var(--glowStrong);transition:border-color var(--T),box-shadow var(--T);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+    .avatar-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+    .avatar-initial{font-size:28px;font-weight:700;color:var(--accent);transition:color var(--T)}
+    .profile-name{font-size:21px;font-weight:700;letter-spacing:-.3px;color:var(--text);text-align:center}
+    .profile-prompt{font-size:14px;color:var(--textSub);text-align:center;line-height:21px;max-width:270px}
+    .pname{color:var(--accent);font-weight:600;transition:color var(--T)}
+
+    /* ── Category tabs ── */
+    .cat-scroll{width:100%;max-width:500px;overflow-x:auto;padding-bottom:2px;margin-bottom:4px;-ms-overflow-style:none;scrollbar-width:none}
+    .cat-scroll::-webkit-scrollbar{display:none}
+    .cat-row{display:flex;gap:8px;padding:0 2px;width:max-content}
+    .cat-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:var(--textSub);border-radius:20px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.2px}
+    .cat-btn.active,.cat-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+
+    /* ── Feeling grid ── */
+    .feeling-section{width:100%;max-width:500px;margin-bottom:22px}
+    .feeling-label{font-size:10px;font-weight:600;color:var(--textMuted);letter-spacing:1.1px;text-transform:uppercase;text-align:center;margin-bottom:14px}
+    .feeling-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    @media(min-width:400px){.feeling-grid{grid-template-columns:repeat(5,1fr)}}
+    @media(min-width:480px){.feeling-grid{grid-template-columns:repeat(6,1fr)}}
+
+    .feeling-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);cursor:pointer;padding:10px 6px 8px;border-radius:14px;transition:background .18s,border-color .22s,transform .1s;position:relative}
+    .feeling-btn:hover{background:rgba(255,255,255,0.06);transform:translateY(-1px)}
+    .feeling-btn.active{background:rgba(255,255,255,0.06);border-color:var(--accent)}
+    .feeling-btn:active{transform:scale(.95)}
+    .feel-icon{font-size:22px;display:block;transition:transform .22s cubic-bezier(.34,1.56,.64,1),filter .28s ease;filter:drop-shadow(0 0 0 transparent)}
+    .feeling-btn.active .feel-icon{transform:scale(1.18);filter:drop-shadow(0 0 7px var(--accent))}
+    .feel-name{font-size:9px;color:var(--textMuted);font-weight:500;letter-spacing:.2px;text-align:center;line-height:13px;transition:color .22s}
+    .feeling-btn.active .feel-name{color:var(--accent)}
+
+    /* ── Message box ── */
+    .message-section{width:100%;max-width:500px}
+    textarea{width:100%;min-height:140px;background:var(--inputBg);border:1px solid var(--inputBorder);border-radius:18px;padding:18px 20px;color:var(--text);font-size:15px;line-height:25px;resize:none;outline:none;font-family:inherit;transition:border-color var(--T),background var(--T),box-shadow var(--T)}
+    textarea::placeholder{color:var(--textMuted)}
+    textarea:focus{border-color:var(--inputBorderFocus);background:rgba(255,255,255,0.04);box-shadow:0 0 28px var(--glow)}
+    .char-count{text-align:right;font-size:11px;color:var(--textMuted);margin-top:6px;padding-right:2px}
+    .send-btn{width:100%;margin-top:16px;padding:16px;background:var(--accent);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;letter-spacing:.2px;cursor:pointer;transition:background var(--T),box-shadow var(--T),transform .1s,opacity .15s;box-shadow:0 6px 26px var(--glowStrong)}
+    .send-btn:hover{opacity:.87}.send-btn:active{transform:scale(.97)}.send-btn:disabled{opacity:.35;cursor:not-allowed}
+    .anon-badge{display:flex;align-items:center;gap:7px;margin-top:14px;justify-content:center}
+    .anon-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);opacity:.5;transition:background var(--T)}
+    .anon-text{font-size:11px;color:var(--textMuted);font-weight:500}
+
+    /* ── Success ── */
+    #successView{display:none;flex-direction:column;align-items:center;text-align:center;padding:50px 0 28px;gap:13px;width:100%;max-width:500px}
+    .success-heart{font-size:58px;animation:hpop .55s cubic-bezier(.34,1.56,.64,1) forwards}
+    @keyframes hpop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
+    .success-title{font-size:22px;font-weight:700;letter-spacing:-.3px}
+    .success-sub{font-size:14px;color:var(--textSub);line-height:21px;max-width:250px}
+    .send-another-btn{background:none;border:1px solid var(--inputBorder);color:var(--accent);border-radius:12px;padding:11px 26px;font-size:14px;font-weight:600;cursor:pointer;transition:border-color .2s,background .2s}
+    .send-another-btn:hover{background:rgba(255,255,255,.04)}
+
+    /* ── Divider ── */
+    .divider-line{width:100%;max-width:500px;height:1px;background:var(--divider);margin:36px 0}
+
+    /* ── CTA ── */
+    .cta-section{width:100%;max-width:500px;text-align:center}
+    .cta-title{font-size:16px;font-weight:700;margin-bottom:6px}
+    .cta-sub{font-size:13px;color:var(--textSub);line-height:20px;margin-bottom:22px;max-width:270px;margin-left:auto;margin-right:auto}
+    .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .cta-primary{background:var(--accent);color:#fff;border:none;border-radius:12px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;box-shadow:0 4px 18px var(--glowStrong);transition:opacity .15s,transform .1s,background var(--T),box-shadow var(--T)}
+    .cta-primary:hover{opacity:.87}.cta-primary:active{transform:scale(.97)}
+    .cta-secondary{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--cardBorder);border-radius:12px;padding:13px 28px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s}
+    .cta-secondary:hover{background:rgba(255,255,255,.08)}
+
+    /* ── Footer ── */
+    .footer{margin-top:44px;font-size:11px;color:var(--textMuted);text-align:center;line-height:20px}
+    .footer a{color:var(--textMuted);text-decoration:none}.footer a:hover{color:var(--textSub)}
+
+    /* ── Not found ── */
+    #notFound{display:none;flex-direction:column;align-items:center;text-align:center;padding:80px 20px;gap:12px}
+    .nf-icon{font-size:44px;margin-bottom:6px}.nf-title{font-size:20px;font-weight:700}.nf-sub{font-size:14px;color:var(--textSub);max-width:260px;line-height:21px}
+
+    /* ── Toast ── */
+    #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:#111116;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:12px 22px;border-radius:30px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;opacity:0;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.5);pointer-events:none}
+    #toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+  </style>
+</head>
+<body class="t-soft">
+
+<div class="bg-glow">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+<div class="floating-particles" id="particles"></div>
+
+<div class="page">
+
+  <div class="brand-bar">
+    <div class="brand-dot"></div>
+    <span class="brand-name">Tag Connection</span>
+  </div>
+
+  <!-- Not found -->
+  <div id="notFound">
+    <div class="nf-icon">🔍</div>
+    <div class="nf-title">Profile not found</div>
+    <div class="nf-sub">This link may be invalid or the user may have deleted their profile.</div>
+    <a href="https://tagconnection.co" class="cta-primary" style="margin-top:14px">Go to Tag Connection</a>
+  </div>
+
+  <!-- Main -->
+  <div id="mainContent" style="display:none;width:100%;flex-direction:column;align-items:center">
+
+    <div class="profile-section">
+      <div class="avatar-ring" id="avatarRing">
+        <span class="avatar-initial" id="avatarInitial">?</span>
+      </div>
+      <div class="profile-name" id="profileName">···</div>
+      <div class="profile-prompt">Send <span class="pname" id="firstName">them</span> an anonymous message</div>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="cat-scroll" style="margin-bottom:16px">
+      <div class="cat-row" id="catRow"></div>
+    </div>
+
+    <!-- Feeling grid -->
+    <div class="feeling-section">
+      <div class="feeling-label" id="feelingLabel">Choose a feeling</div>
+      <div class="feeling-grid" id="feelingGrid"></div>
+    </div>
+
+    <!-- Message form -->
+    <div class="message-section" id="messageForm">
+      <textarea id="msgInput" maxlength="300"
+        placeholder="Write something gentle… your identity stays hidden 🤍"
+        oninput="updateChar()"></textarea>
+      <div class="char-count"><span id="charCount">0</span> / 300</div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send anonymously</button>
+      <div class="anon-badge">
+        <div class="anon-dot"></div>
+        <span class="anon-text">Your identity is completely hidden</span>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div id="successView">
+      <div class="success-heart" id="successIcon">🤍</div>
+      <div class="success-title">Message sent ✓</div>
+      <div class="success-sub">Your anonymous message has been delivered. They'll never know it was you.</div>
+      <button class="send-another-btn" onclick="resetForm()">Send another</button>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <div class="cta-section">
+      <div class="cta-title">Want your own anonymous link?</div>
+      <div class="cta-sub">Let people send you messages anonymously. Create a profile — it's free.</div>
+      <div class="cta-btns">
+        <a href="tagconnection://" id="openAppBtn" class="cta-primary">Open App</a>
+        <a href="https://tagconnection.co" class="cta-secondary">Download App</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="https://tagconnection.co">tagconnection.co</a> &nbsp;·&nbsp;
+      <a href="https://tagconnection.co/terms/">Terms</a> &nbsp;·&nbsp;
+      <a href="https://tagconnection.co/privacy/">Privacy</a>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js'
+  import { getFirestore, collection, doc, getDoc, addDoc, getDocs, query, where, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'
+
+  const app = initializeApp({
+    apiKey:'AIzaSyCmhGCfl7KiBU5IF_t2WhAskDlEHoZsonI',
+    authDomain:'my-awsom-tagconnect.firebaseapp.com',
+    projectId:'my-awsom-tagconnect',
+    storageBucket:'my-awsom-tagconnect.firebasestorage.app',
+    messagingSenderId:'739796322832',
+    appId:'1:739796322832:web:418026f8769ba550f8d895',
+  })
+  const db = getFirestore(app)
+
+  // ─── ALL FEELINGS ───────────────────────────────────────────
+  const CATEGORIES = [
+    {
+      id: 'hearts', label: '💗 Hearts',
+      feelings: [
+        { icon:'🤍', name:'Soft',    theme:'t-soft',    placeholder:'Write something gentle… your identity stays hidden 🤍' },
+        { icon:'❤️', name:'Love',    theme:'t-love',    placeholder:'Tell them how you really feel… anonymously ❤️' },
+        { icon:'💜', name:'Deep',    theme:'t-deep',    placeholder:'Say something meaningful… only they will know 💜' },
+        { icon:'💔', name:'Broken',  theme:'t-broken',  placeholder:'Some feelings are hard to say out loud 💔' },
+        { icon:'🥰', name:'Crush',   theme:'t-crush',   placeholder:'Maybe they already know… or maybe not 🥰' },
+        { icon:'💭', name:'Missing', theme:'t-missing', placeholder:'Say what you\'ve been holding in 💭' },
+      ]
+    },
+    {
+      id: 'weather', label: '☀️ Weather',
+      feelings: [
+        { icon:'☀️', name:'Sunny',   theme:'t-sunny',   placeholder:'Bright energy incoming ☀️' },
+        { icon:'🌧️', name:'Rainy',   theme:'t-rainy',   placeholder:'Something soft and quiet… like rain 🌧️' },
+        { icon:'⚡', name:'Storm',   theme:'t-storm',   placeholder:'Bold. Electric. Say it loud ⚡' },
+        { icon:'🌙', name:'Night',   theme:'t-night',   placeholder:'Things feel different at night 🌙' },
+        { icon:'☁️', name:'Cloudy',  theme:'t-cloudy',  placeholder:'Something in between… not quite sure 🌫️' },
+        { icon:'❄️', name:'Snow',    theme:'t-snow',    placeholder:'Quiet and pure… like fresh snow ❄️' },
+      ]
+    },
+    {
+      id: 'nature', label: '🌸 Nature',
+      feelings: [
+        { icon:'🌸', name:'Blossom', theme:'t-blossom', placeholder:'Delicate and blooming 🌸' },
+        { icon:'🌊', name:'Ocean',   theme:'t-ocean',   placeholder:'Deep, vast, and honest 🌊' },
+        { icon:'🌿', name:'Forest',  theme:'t-forest',  placeholder:'Rooted and real 🌿' },
+        { icon:'🌀', name:'Spiral',  theme:'t-spiral',  placeholder:'A feeling going round and round 🌀' },
+        { icon:'🏔️', name:'Mountain',theme:'t-mountain',placeholder:'Steady. Strong. Grounded 🏔️' },
+        { icon:'🌵', name:'Desert',  theme:'t-desert',  placeholder:'Distant but burning with something 🌵' },
+      ]
+    },
+    {
+      id: 'fireice', label: '🔥 Fire & Ice',
+      feelings: [
+        { icon:'🔥', name:'Fire',    theme:'t-fire',    placeholder:'Say it with full intensity 🔥' },
+        { icon:'🧊', name:'Ice',     theme:'t-ice',     placeholder:'Cool, calm, and collected 🧊' },
+        { icon:'🌋', name:'Volcano', theme:'t-volcano',  placeholder:'Something you\'ve been holding back 🌋' },
+        { icon:'🌨️', name:'Frost',   theme:'t-frost',   placeholder:'Cold on the outside, warm inside 🌨️' },
+      ]
+    },
+    {
+      id: 'cosmic', label: '✨ Cosmic',
+      feelings: [
+        { icon:'⭐', name:'Star',    theme:'t-star',    placeholder:'You\'re a star to them ⭐' },
+        { icon:'🌌', name:'Galaxy',  theme:'t-galaxy',  placeholder:'A universe of feelings 🌌' },
+        { icon:'🌙', name:'Moon',    theme:'t-moon',    placeholder:'Dreamy and soft 🌙' },
+        { icon:'☄️', name:'Comet',   theme:'t-comet',   placeholder:'Fast, bright, unforgettable ☄️' },
+        { icon:'🔮', name:'Nebula',  theme:'t-nebula',  placeholder:'Something magical and undefined 🔮' },
+      ]
+    },
+    {
+      id: 'vibes', label: '🎶 Vibes',
+      feelings: [
+        { icon:'🎶', name:'Music',   theme:'t-music',   placeholder:'This feeling has a song 🎶' },
+        { icon:'💥', name:'Energy',  theme:'t-energy',  placeholder:'Pure, raw energy 💥' },
+        { icon:'💎', name:'Luxury',  theme:'t-luxury',  placeholder:'Elevated and exclusive 💎' },
+        { icon:'🎉', name:'Party',   theme:'t-party',   placeholder:'Life of the party energy 🎉' },
+        { icon:'😌', name:'Chill',   theme:'t-chill',   placeholder:'Easy, calm, no pressure 😌' },
+        { icon:'🖤', name:'Mystery', theme:'t-mystery', placeholder:'Leave them wondering 🖤' },
+      ]
+    },
+    {
+      id: 'time', label: '🌅 Time',
+      feelings: [
+        { icon:'🌅', name:'Sunrise', theme:'t-sunrise', placeholder:'Fresh start energy 🌅' },
+        { icon:'🌞', name:'Midday',  theme:'t-midday',  placeholder:'Bright and direct 🌞' },
+        { icon:'🌆', name:'Golden',  theme:'t-golden',  placeholder:'Golden hour feelings 🌆' },
+        { icon:'🌃', name:'Midnight',theme:'t-midnight',placeholder:'3am thoughts that need to be said 🌃' },
+      ]
+    },
+    {
+      id: 'seasons', label: '🌻 Seasons',
+      feelings: [
+        { icon:'☀️', name:'Summer',  theme:'t-summer',  placeholder:'Warm, bright, alive ☀️' },
+        { icon:'❄️', name:'Winter',  theme:'t-winter',  placeholder:'Quiet and still ❄️' },
+        { icon:'🍂', name:'Autumn',  theme:'t-autumn',  placeholder:'Things changing, letting go 🍂' },
+        { icon:'🌱', name:'Spring',  theme:'t-spring',  placeholder:'Something new beginning 🌱' },
+        { icon:'🌧️', name:'Rain',    theme:'t-rain',    placeholder:'Soft, melancholic, real 🌧️' },
+        { icon:'🏔️', name:'Peaks',   theme:'t-peaks',   placeholder:'High above it all 🏔️' },
+      ]
+    },
+    {
+      id: 'moods', label: '😊 Moods',
+      feelings: [
+        { icon:'😊', name:'Happy',   theme:'t-happy',   placeholder:'Spread some joy anonymously 😊' },
+        { icon:'😢', name:'Sad',     theme:'t-sad',     placeholder:'Some things hurt. It\'s okay to say it 😢' },
+        { icon:'😤', name:'Frustrated',theme:'t-storm', placeholder:'Let it out. They need to know 😤' },
+        { icon:'🥺', name:'Soft',    theme:'t-soft',    placeholder:'Vulnerable. Real. Gentle 🥺' },
+        { icon:'😏', name:'Sly',     theme:'t-mystery', placeholder:'Say it with a smirk 😏' },
+        { icon:'🤩', name:'Amazed',  theme:'t-star',    placeholder:'They genuinely impress you 🤩' },
+      ]
+    },
+  ]
+
+  // ── Build UI ──
+  let selectedTheme     = 't-soft'
+  let selectedIcon      = '🤍'
+  let selectedPlaceholder = CATEGORIES[0].feelings[0].placeholder
+  let activeCategory    = 'hearts'
+
+  function buildCategories() {
+    const catRow = document.getElementById('catRow')
+    CATEGORIES.forEach(cat => {
+      const btn = document.createElement('button')
+      btn.className  = 'cat-btn' + (cat.id === activeCategory ? ' active' : '')
+      btn.textContent = cat.label
+      btn.onclick = () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+        activeCategory = cat.id
+        buildFeelingGrid(cat.id)
+      }
+      catRow.appendChild(btn)
+    })
+    buildFeelingGrid('hearts')
+  }
+
+  function buildFeelingGrid(catId) {
+    const cat  = CATEGORIES.find(c => c.id === catId)
+    const grid = document.getElementById('feelingGrid')
+    document.getElementById('feelingLabel').textContent = cat.label.split(' ').slice(1).join(' ') + ' feelings'
+    grid.innerHTML = ''
+
+    cat.feelings.forEach((f, i) => {
+      const btn = document.createElement('button')
+      btn.className  = 'feeling-btn' + (f.theme === selectedTheme ? ' active' : '')
+      btn.dataset.theme = f.theme
+      btn.dataset.icon  = f.icon
+      btn.dataset.placeholder = f.placeholder
+      btn.innerHTML = `<span class="feel-icon">${f.icon}</span><span class="feel-name">${f.name}</span>`
+      btn.onclick = () => selectFeeling(btn)
+      grid.appendChild(btn)
+    })
+  }
+
+  window.selectFeeling = btn => {
+    document.querySelectorAll('.feeling-btn').forEach(b => b.classList.remove('active'))
+    btn.classList.add('active')
+
+    selectedTheme       = btn.dataset.theme
+    selectedIcon        = btn.dataset.icon
+    selectedPlaceholder = btn.dataset.placeholder
+
+    document.body.className  = selectedTheme
+    document.getElementById('msgInput').placeholder = selectedPlaceholder
+    document.getElementById('successIcon').textContent = selectedIcon
+
+    spawnParticlesForTheme(selectedIcon)
+  }
+
+  // ── Floating particles ──
+  function spawnParticles(icons) {
+    const container = document.getElementById('particles')
+    container.innerHTML = ''
+    const pool = icons.length > 1 ? icons : ['✨', ...icons, '·', '·']
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('span')
+      p.className   = 'fparticle'
+      p.textContent = pool[Math.floor(Math.random() * pool.length)]
+      p.style.left  = `${Math.random() * 100}%`
+      p.style.bottom = `${Math.random() * 10}px`
+      p.style.fontSize = `${10 + Math.random() * 14}px`
+      p.style.animationDelay    = `${Math.random() * 14}s`
+      p.style.animationDuration = `${10 + Math.random() * 8}s`
+      container.appendChild(p)
+    }
+  }
+
+  function spawnParticlesForTheme(icon) {
+    spawnParticles([icon, '✨', '·'])
+  }
+
+  // Initial particles
+  spawnParticles(['🤍','💜','🖤','💛','🔥','💙','⭐','🌸','❄️'])
+
+  // ── Profile loading ──
+  function getUsername() {
+    const parts = window.location.pathname.replace(/\/+$/,'').split('/')
+    const last  = parts[parts.length - 1]
+    if (last && last !== 'ask' && last !== 'index.html') return last
+    return new URLSearchParams(window.location.search).get('u')
+      || window.location.hash.replace('#','')
+      || null
+  }
+
+  let recipientId = null, recipientUsername = null, recipientName = null
+
+  async function loadProfile() {
+    const username = getUsername()
+    if (!username) { showNotFound(); return }
+    try {
+      const q    = query(collection(db,'profiles'), where('username','==', username.toLowerCase()))
+      const snap = await getDocs(q)
+      if (!snap.empty) {
+        const d = snap.docs[0]; renderProfile(d.id, d.data())
+      } else {
+        const direct = await getDoc(doc(db,'profiles', username))
+        if (direct.exists()) renderProfile(username, direct.data())
+        else showNotFound()
+      }
+    } catch(e) { console.error(e); showNotFound() }
+  }
+
+  function renderProfile(uid, data) {
+    recipientId       = uid
+    recipientUsername = data.username ?? uid
+    recipientName     = data.name ?? 'User'
+
+    const ring = document.getElementById('avatarRing')
+    if (data.photo) {
+      ring.innerHTML = `<img src="${data.photo}" alt="${recipientName}"/>`
+    } else {
+      document.getElementById('avatarInitial').textContent = recipientName[0]?.toUpperCase() ?? '?'
+    }
+
+    document.getElementById('profileName').textContent = recipientName
+    document.getElementById('firstName').textContent   = recipientName.split(' ')[0]
+    document.getElementById('openAppBtn').href         = `tagconnection://ask/${recipientUsername}`
+
+    document.getElementById('mainContent').style.display = 'flex'
+    buildCategories()
+  }
+
+  function showNotFound() {
+    document.getElementById('notFound').style.display    = 'flex'
+    document.getElementById('mainContent').style.display = 'none'
+  }
+
+  window.updateChar = () => {
+    document.getElementById('charCount').textContent =
+      document.getElementById('msgInput').value.length
+  }
+
+  window.sendMessage = async () => {
+    const text = document.getElementById('msgInput').value.trim()
+    if (!text)        { showToast('Write something first ✨'); return }
+    if (!recipientId) { showToast('Profile not found'); return }
+
+    const btn = document.getElementById('sendBtn')
+    btn.disabled    = true
+    btn.textContent = 'Sending…'
+
+    try {
+      await addDoc(collection(db,'anonymousMessages'), {
+        recipientId, recipientUsername,
+        question: text, feeling: selectedTheme, icon: selectedIcon,
+        reply: null, repliedAt: null, sharedToFeed: false,
+        createdAt: serverTimestamp(),
+      })
+      document.getElementById('messageForm').style.display = 'none'
+      document.getElementById('successIcon').textContent   = selectedIcon
+      document.getElementById('successView').style.display = 'flex'
+    } catch(e) {
+      console.error(e)
+      showToast('Something went wrong. Try again.')
+      btn.disabled    = false
+      btn.textContent = 'Send anonymously'
+    }
+  }
+
+  window.resetForm = () => {
+    document.getElementById('msgInput').value              = ''
+    document.getElementById('charCount').textContent       = '0'
+    document.getElementById('successView').style.display   = 'none'
+    document.getElementById('messageForm').style.display   = ''
+    document.getElementById('sendBtn').disabled            = false
+    document.getElementById('sendBtn').textContent         = 'Send anonymously'
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast')
+    t.textContent = msg
+    t.classList.add('show')
+    setTimeout(() => t.classList.remove('show'), 2800)
+  }
+
+  loadProfile()
+</script>
+</body>
+</html>
