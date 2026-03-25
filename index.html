@@ -1,176 +1,696 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Tag Connection</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal — Tag Connection</title>
 <style>
+  :root {
+    --bg: #000000;
+    --surface: #0a0a0a;
+    --surface-2: #111111;
+    --border: rgba(255,255,255,0.08);
+    --border-hover: rgba(255,255,255,0.15);
+    --accent: #A855F7;
+    --accent-soft: rgba(168,85,247,0.12);
+    --text-primary: #f5f5f7;
+    --text-secondary: #a1a1a6;
+    --text-muted: #6e6e73;
+    --font-display: 'Georgia', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --radius: 14px;
+  }
 
-body{
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-background:#000;
-color:#fff;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-.container{
-max-width:1000px;
-margin:auto;
-padding:40px 20px;
-}
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 0;
-}
+  body::before {
+    content: '';
+    position: fixed;
+    top: -40%; left: 50%;
+    transform: translateX(-50%);
+    width: 900px; height: 600px;
+    background: radial-gradient(ellipse at center, rgba(168,85,247,0.055) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.logo{
-font-size:26px;
-font-weight:700;
-color:#7C3AED;
-}
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
 
-.hero{
-text-align:center;
-padding:80px 0;
-}
+  nav .brand {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
 
-.hero h1{
-font-size:44px;
-margin-bottom:20px;
-}
+  nav .brand span { color: var(--accent); }
 
-.hero p{
-font-size:18px;
-color:#ccc;
-max-width:650px;
-margin:auto;
-}
+  /* MAIN */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 120px 24px 100px;
+  }
 
-.section{
-margin-top:70px;
-text-align:center;
-}
+  /* HERO */
+  .hero {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) both;
+  }
 
-.section h2{
-font-size:28px;
-margin-bottom:15px;
-}
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
 
-.section p{
-max-width:700px;
-margin:auto;
-color:#bbb;
-}
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 28px; height: 1px;
+    background: var(--accent);
+    opacity: 0.5;
+  }
 
-.footer{
-margin-top:80px;
-padding:30px 0;
-border-top:1px solid #222;
-text-align:center;
-font-size:14px;
-}
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
 
-.footer a{
-margin:0 15px;
-text-decoration:none;
-color:#7C3AED;
-}
+  .hero p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin: 0 auto 24px;
+    line-height: 1.65;
+  }
 
-.badge{
-display:inline-block;
-background:#7C3AED;
-padding:10px 18px;
-border-radius:20px;
-margin-top:20px;
-font-weight:600;
-}
+  .hero-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
 
+  /* TAB SWITCHER */
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    padding: 5px;
+    width: fit-content;
+    margin: 0 auto 64px;
+    animation: fadeUp 0.7s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .tab-btn {
+    position: relative;
+    padding: 10px 28px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border-radius: 980px;
+    cursor: pointer;
+    transition: color 0.25s;
+    z-index: 1;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    color: var(--text-primary);
+  }
+
+  /* sliding pill */
+  .tab-pill {
+    position: absolute;
+    top: 5px;
+    height: calc(100% - 10px);
+    background: var(--accent);
+    border-radius: 980px;
+    transition: left 0.35s cubic-bezier(0.34,1.56,0.64,1), width 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active {
+    display: block;
+    animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  /* SECTION */
+  .section { margin-bottom: 56px; }
+
+  .section-number {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+    opacity: 0.8;
+  }
+
+  .section h2 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    line-height: 1.25;
+  }
+
+  .section p {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.75;
+    margin-bottom: 12px;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 52px 0;
+  }
+
+  /* LIST */
+  .clean-list { list-style: none; margin: 16px 0; }
+
+  .clean-list li {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .clean-list li:last-child { border-bottom: none; }
+
+  .clean-list li::before {
+    content: '';
+    display: block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 10px;
+    opacity: 0.7;
+  }
+
+  /* PERMISSIONS GRID */
+  .permissions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 28px 0 8px;
+  }
+
+  @media (max-width: 560px) {
+    .permissions-grid { grid-template-columns: 1fr; }
+    .tab-btn { padding: 10px 18px; font-size: 13px; }
+  }
+
+  .permission-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .permission-card:hover {
+    border-color: var(--border-hover);
+    background: rgba(168,85,247,0.05);
+  }
+
+  .permission-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+  .permission-info strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .permission-info span {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* HIGHLIGHT */
+  .highlight-block {
+    background: rgba(168,85,247,0.1);
+    border: 1px solid rgba(168,85,247,0.2);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin: 20px 0;
+  }
+
+  .highlight-block p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .highlight-block strong { color: var(--text-primary); }
+
+  /* WARNING BLOCK */
+  .warning-block {
+    background: rgba(255, 59, 48, 0.08);
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    margin: 20px 0;
+  }
+
+  .warning-block p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .warning-block strong { color: #ff6b6b; }
+
+  /* CONTACT */
+  .contact-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .contact-card .contact-left strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .contact-card .contact-left span {
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 980px;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+
+  .contact-link:hover { opacity: 0.85; transform: scale(0.98); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 36px 24px 56px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer .footer-brand {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  footer .footer-brand span { color: var(--accent); }
+
+  footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 </style>
-
 </head>
-
 <body>
 
-<div class="container">
+<nav>
+  <span class="brand">TAG <span>CONNECTION</span> &nbsp;·&nbsp; Legal</span>
+</nav>
 
-<header>
-<div class="logo">Tag Connection</div>
-</header>
+<main>
 
-<div class="hero">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Legal Documents</div>
+    <h1>Policies &amp; Terms</h1>
+    <p>Everything you need to know about how Tag Connection works, what we collect, and the rules that keep our community safe.</p>
+    <div class="hero-meta">Effective Date: June 2025 &nbsp;·&nbsp; TAMANY.TECH</div>
+  </div>
 
-<h1>Discover. Connect. Chat.</h1>
+  <!-- Tab bar -->
+  <div class="tab-bar" id="tabBar">
+    <div class="tab-pill" id="tabPill"></div>
+    <button class="tab-btn active" id="tab-privacy" onclick="switchTab('privacy')">Privacy Policy</button>
+    <button class="tab-btn" id="tab-terms" onclick="switchTab('terms')">Terms of Service</button>
+  </div>
 
-<p>
-Tag Connection is a modern social discovery platform that helps people
-find and connect with others nearby. Swipe through profiles, discover
-new people, and start real conversations.
-</p>
+  <!-- ─── PRIVACY POLICY PAGE ─── -->
+  <div class="page active" id="page-privacy">
 
-<div class="badge">18+ Community</div>
+    <div class="section">
+      <div class="section-number">Section 01</div>
+      <h2>Information We Collect</h2>
+      <p>When you use Tag Connection, we may collect the following types of information to provide you with the best possible experience:</p>
+      <ul class="clean-list">
+        <li>Account information such as your email address and login credentials</li>
+        <li>Profile information including photos, bio, age, and personal preferences</li>
+        <li>Messages exchanged between users on the platform</li>
+        <li>Usage data such as profile interactions, swipes, and connections made</li>
+        <li>Device information including device type, operating system, and app version</li>
+        <li>Location data used to help you discover connections nearby</li>
+        <li>Camera and media content when you upload photos or record content in-app</li>
+      </ul>
+    </div>
 
-</div>
+    <div class="divider"></div>
 
-<div class="section">
+    <div class="section">
+      <div class="section-number">Section 02</div>
+      <h2>Device Permissions We Request</h2>
+      <p>Tag Connection requests the following permissions to enable core features. All permissions are optional — manage them anytime in your device settings.</p>
 
-<h2>Discover People</h2>
+      <div class="permissions-grid">
+        <div class="permission-card">
+          <div class="permission-icon">📷</div>
+          <div class="permission-info">
+            <strong>Camera</strong>
+            <span>Take profile photos and in-app content directly from your device camera.</span>
+          </div>
+        </div>
+        <div class="permission-card">
+          <div class="permission-icon">🖼</div>
+          <div class="permission-info">
+            <strong>Photos &amp; Media</strong>
+            <span>Select and upload images from your gallery to your profile or conversations.</span>
+          </div>
+        </div>
+        <div class="permission-card">
+          <div class="permission-icon">📍</div>
+          <div class="permission-info">
+            <strong>Location</strong>
+            <span>Show nearby users and improve local connection suggestions. Never stored continuously.</span>
+          </div>
+        </div>
+        <div class="permission-card">
+          <div class="permission-icon">💬</div>
+          <div class="permission-info">
+            <strong>Messages</strong>
+            <span>In-app messages are stored securely and never shared with third parties.</span>
+          </div>
+        </div>
+        <div class="permission-card">
+          <div class="permission-icon">🌐</div>
+          <div class="permission-info">
+            <strong>Internet Access</strong>
+            <span>Required to sync your profile, messages, and connections in real time.</span>
+          </div>
+        </div>
+      </div>
 
-<p>
-Explore profiles, view photos, and discover people in your area who
-are looking to connect.
-</p>
+      <div class="highlight-block">
+        <p><strong>Your control.</strong> You may revoke any permission at any time through your device Settings. Some features may be limited without certain permissions, but your account remains active.</p>
+      </div>
+    </div>
 
-</div>
+    <div class="divider"></div>
 
-<div class="section">
+    <div class="section">
+      <div class="section-number">Section 03</div>
+      <h2>How We Use Your Information</h2>
+      <ul class="clean-list">
+        <li>Provide and operate the Tag Connection platform and all its features</li>
+        <li>Match users and facilitate meaningful connections</li>
+        <li>Improve features, performance, and overall user experience</li>
+        <li>Maintain platform safety and prevent fraud or abuse</li>
+        <li>Respond to user support requests and inquiries</li>
+        <li>Enforce our Terms of Service and community guidelines</li>
+      </ul>
+    </div>
 
-<h2>Swipe to Connect</h2>
+    <div class="section">
+      <div class="section-number">Section 04</div>
+      <h2>User Content</h2>
+      <p>Content you upload — including photos, profile information, and messages — may be visible to other users depending on your privacy settings. You retain ownership of your content. By uploading it, you grant Tag Connection a limited licence to display and deliver it within the platform.</p>
+    </div>
 
-<p>
-Swipe through profiles and connect instantly with people who are
-interested in meeting new friends or building meaningful relationships.
-</p>
+    <div class="section">
+      <div class="section-number">Section 05</div>
+      <h2>Data Security</h2>
+      <p>We take reasonable technical and organizational measures to protect your data from unauthorized access. Our infrastructure is powered by Firebase, which maintains industry-standard security certifications.</p>
+    </div>
 
-</div>
+    <div class="section">
+      <div class="section-number">Section 06</div>
+      <h2>Age Restriction</h2>
+      <div class="highlight-block">
+        <p><strong>Tag Connection is exclusively for users 18 years of age or older.</strong> We do not knowingly collect information from users under 18. Any such account discovered will be removed promptly.</p>
+      </div>
+    </div>
 
-<div class="section">
+    <div class="section">
+      <div class="section-number">Section 07</div>
+      <h2>Sharing of Information</h2>
+      <p>We do not sell your personal data — ever. Information may only be shared in these limited circumstances:</p>
+      <ul class="clean-list">
+        <li>When required by applicable law or a valid legal process</li>
+        <li>When necessary to protect the safety or security of our users</li>
+        <li>When required to operate the platform securely with trusted service providers</li>
+      </ul>
+    </div>
 
-<h2>Private Messaging</h2>
+    <div class="section">
+      <div class="section-number">Section 08</div>
+      <h2>Your Account Control</h2>
+      <p>You may update, correct, or delete your account information at any time through the app settings. When you delete your account, your data will be removed from our active systems, subject to any legal retention obligations.</p>
+    </div>
 
-<p>
-Once connected, start secure conversations through private messaging
-inside the app.
-</p>
+    <div class="section">
+      <div class="section-number">Section 09</div>
+      <h2>Policy Updates</h2>
+      <p>We may update this Privacy Policy periodically. We will notify you of significant changes through the app or by email. Continued use of Tag Connection constitutes acceptance of the revised policy.</p>
+    </div>
 
-</div>
+    <div class="section">
+      <div class="section-number">Section 10</div>
+      <h2>Contact Us</h2>
+      <p>Questions or concerns about your data? Reach out directly.</p>
+      <div class="contact-card">
+        <div class="contact-left">
+          <strong>TAMANY.TECH — Tag Connection</strong>
+          <span>Privacy &amp; Data enquiries</span>
+        </div>
+        <a class="contact-link" href="mailto:tamanitadiwa@gmail.com">✉ tamanitadiwa@gmail.com</a>
+      </div>
+    </div>
 
-<div class="section">
+  </div><!-- /page-privacy -->
 
-<h2>Community Safety</h2>
 
-<p>
-Tag Connection maintains a respectful and safe community. Users must
-follow community rules and be at least 18 years old to use the platform.
-</p>
+  <!-- ─── TERMS OF SERVICE PAGE ─── -->
+  <div class="page" id="page-terms">
 
-</div>
+    <div class="section">
+      <div class="section-number">Section 01</div>
+      <h2>Eligibility</h2>
+      <p>By accessing or using Tag Connection you agree to comply with these Terms of Service. You must be at least <strong>18 years old</strong> to create an account and use the platform.</p>
+    </div>
 
-<div class="footer">
+    <div class="divider"></div>
 
-<a href="/privacy">Privacy Policy</a>
-<a href="/terms">Terms of Service</a>
+    <div class="section">
+      <div class="section-number">Section 02</div>
+      <h2>User Conduct</h2>
+      <p>Users must behave respectfully and responsibly at all times. The following activities are strictly prohibited on Tag Connection:</p>
+      <ul class="clean-list">
+        <li>Nudity or sexually explicit content of any kind</li>
+        <li>Harassment, bullying, or abusive behavior toward other users</li>
+        <li>Hate speech or discrimination based on race, gender, religion, or orientation</li>
+        <li>Threats of violence or any form of intimidation</li>
+        <li>Sharing illegal, harmful, or dangerous content</li>
+        <li>Scams, fraud, or impersonating another person</li>
+        <li>Posting misleading or deliberately false information</li>
+        <li>Spam, unsolicited promotion, or commercial abuse</li>
+        <li>Creating fake, duplicate, or bot accounts</li>
+        <li>Sharing another user's private information without their consent</li>
+      </ul>
+    </div>
 
-<p style="margin-top:20px;">
-Contact: tamanitadiwa@gmail.com
-</p>
+    <div class="section">
+      <div class="section-number">Section 03</div>
+      <h2>Safety &amp; Moderation</h2>
+      <p>Tag Connection maintains an active moderation system to keep our community safe. We may review reports, remove content, restrict access, or permanently suspend accounts that violate these rules.</p>
+      <div class="warning-block">
+        <p><strong>Zero tolerance.</strong> Certain violations — including abuse, threats, illegal content, or fraud — will result in an immediate and permanent ban without prior warning.</p>
+      </div>
+    </div>
 
-</div>
+    <div class="section">
+      <div class="section-number">Section 04</div>
+      <h2>User Responsibility</h2>
+      <p>You are solely responsible for all content you upload, share, or transmit through Tag Connection. By posting content, you confirm that you have the right to share it and that it does not violate any applicable laws or third-party rights.</p>
+    </div>
 
-</div>
+    <div class="section">
+      <div class="section-number">Section 05</div>
+      <h2>Account Suspension</h2>
+      <p>Accounts that violate these Terms may be suspended or permanently banned. Tag Connection reserves the right to take action without prior notice in cases of serious or repeated violations.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-number">Section 06</div>
+      <h2>Service Changes</h2>
+      <p>Tag Connection may update, modify, or discontinue features, policies, or services at any time to improve the platform or comply with applicable regulations. We will make reasonable efforts to notify users of significant changes.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-number">Section 07</div>
+      <h2>Limitation of Liability</h2>
+      <p>Tag Connection is not responsible for user-generated content, interactions between users, or actions taken by users on or off the platform. We provide the service as-is and make no warranties regarding availability, accuracy, or fitness for a particular purpose.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-number">Section 08</div>
+      <h2>Updates to Terms</h2>
+      <p>These Terms may be updated periodically to reflect changes in our practices or applicable law. Continued use of Tag Connection following any update constitutes your acceptance of the revised Terms.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-number">Section 09</div>
+      <h2>Contact Us</h2>
+      <p>Questions about these Terms? We're happy to help.</p>
+      <div class="contact-card">
+        <div class="contact-left">
+          <strong>TAMANY.TECH — Tag Connection</strong>
+          <span>Terms &amp; Legal enquiries</span>
+        </div>
+        <a class="contact-link" href="mailto:tamanitadiwa@gmail.com">✉ tamanitadiwa@gmail.com</a>
+      </div>
+    </div>
+
+  </div><!-- /page-terms -->
+
+</main>
+
+<footer>
+  <div class="footer-brand">TAG <span>CONNECTION</span> &nbsp;·&nbsp; TAMANY.TECH</div>
+  <p>© 2025 TAMANY.TECH. All rights reserved.<br>
+  Designed for users in South Africa &amp; Zimbabwe.</p>
+</footer>
+
+<script>
+  function switchTab(tab) {
+    // Update buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+
+    // Update pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + tab).classList.add('active');
+
+    // Scroll to top of content
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Move pill
+    movePill(tab);
+  }
+
+  function movePill(tab) {
+    const pill = document.getElementById('tabPill');
+    const activeBtn = document.getElementById('tab-' + tab);
+    const bar = document.getElementById('tabBar');
+    const barRect = bar.getBoundingClientRect();
+    const btnRect = activeBtn.getBoundingClientRect();
+    pill.style.left = (btnRect.left - barRect.left) + 'px';
+    pill.style.width = btnRect.width + 'px';
+  }
+
+  // Init pill position on load
+  window.addEventListener('load', () => movePill('privacy'));
+  window.addEventListener('resize', () => {
+    const active = document.querySelector('.tab-btn.active');
+    const tab = active.id.replace('tab-', '');
+    movePill(tab);
+  });
+</script>
 
 </body>
 </html>
