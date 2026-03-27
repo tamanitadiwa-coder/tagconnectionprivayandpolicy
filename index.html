@@ -3,6 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Force black browser UI on ALL platforms -->
+<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+
+<!-- Android Chrome -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="msapplication-navbutton-color" content="#000000">
+<meta name="msapplication-TileColor" content="#000000">
+
+<!-- Apple iOS Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
 <title>Legal — Tag Connection</title>
 <style>
   :root {
@@ -22,7 +37,12 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+
+  html {
+    scroll-behavior: smooth;
+    background: #000000;
+    color-scheme: dark;
+  }
 
   body {
     background: var(--bg);
@@ -245,6 +265,36 @@
     opacity: 0.7;
   }
 
+  /* NUMBERED STEPS */
+  .steps-list { list-style: none; margin: 20px 0; }
+
+  .steps-list li {
+    color: var(--text-secondary);
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .steps-list li:last-child { border-bottom: none; }
+
+  .step-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
   /* PERMISSIONS GRID */
   .permissions-grid {
     display: grid;
@@ -255,7 +305,7 @@
 
   @media (max-width: 560px) {
     .permissions-grid { grid-template-columns: 1fr; }
-    .tab-btn { padding: 10px 18px; font-size: 13px; }
+    .tab-btn { padding: 10px 14px; font-size: 13px; }
   }
 
   .permission-card {
@@ -323,6 +373,22 @@
   }
 
   .warning-block strong { color: #ff6b6b; }
+
+  /* EMAIL CHIP */
+  .email-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 980px;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 12px 0;
+    letter-spacing: 0.01em;
+  }
 
   /* CONTACT */
   .contact-card {
@@ -421,6 +487,7 @@
     <div class="tab-pill" id="tabPill"></div>
     <button class="tab-btn active" id="tab-privacy" onclick="switchTab('privacy')">Privacy Policy</button>
     <button class="tab-btn" id="tab-terms" onclick="switchTab('terms')">Terms of Service</button>
+    <button class="tab-btn" id="tab-delete" onclick="switchTab('delete')">Delete Account</button>
   </div>
 
   <!-- ─── PRIVACY POLICY PAGE ─── -->
@@ -648,6 +715,86 @@
 
   </div><!-- /page-terms -->
 
+
+  <!-- ─── DELETE ACCOUNT PAGE ─── -->
+  <div class="page" id="page-delete">
+
+    <div class="section">
+      <div class="section-number">Section 01</div>
+      <h2>Your Right to Delete</h2>
+      <p>At Tag Connection, we respect your privacy and give you full control over your data. You can request to delete your account and all associated data at any time — no questions asked.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-number">Section 02</div>
+      <h2>How to Request Deletion</h2>
+      <p>Send us a deletion request by email. Our team will process it within 7 days.</p>
+
+      <ul class="steps-list">
+        <li>
+          <div class="step-num">1</div>
+          <div>Send an email to <strong style="color: var(--text-primary);">support@tagconnection.co</strong></div>
+        </li>
+        <li>
+          <div class="step-num">2</div>
+          <div>Use the subject line: <strong style="color: var(--text-primary);">"Delete my account"</strong></div>
+        </li>
+        <li>
+          <div class="step-num">3</div>
+          <div>Include the <strong style="color: var(--text-primary);">email or phone number</strong> linked to your account so we can locate it</div>
+        </li>
+      </ul>
+
+      <div class="contact-card" style="margin-top: 28px;">
+        <div class="contact-left">
+          <strong>Ready to send your request?</strong>
+          <span>We respond within 7 business days</span>
+        </div>
+        <a class="contact-link" href="mailto:support@tagconnection.co?subject=Delete%20my%20account">✉ Email Us</a>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-number">Section 03</div>
+      <h2>What Gets Deleted</h2>
+      <p>When your account is deleted, the following data is permanently and irreversibly removed from our systems:</p>
+      <ul class="clean-list">
+        <li>Profile information — name, age, photos, and bio</li>
+        <li>All messages and chat history</li>
+        <li>Matches and connections</li>
+        <li>Account login details and credentials</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-number">Section 04</div>
+      <h2>What May Be Retained</h2>
+      <p>A limited subset of data may be retained for a short period after deletion for the following purposes only:</p>
+      <ul class="clean-list">
+        <li>Security and fraud prevention</li>
+        <li>Legal compliance and regulatory obligations</li>
+      </ul>
+      <div class="highlight-block" style="margin-top: 20px;">
+        <p>Any retained data of this kind is <strong>automatically and permanently deleted within 30–90 days</strong> and is never used for any other purpose.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-number">Section 05</div>
+      <h2>Final Notice</h2>
+      <div class="warning-block">
+        <p><strong>Account deletion is permanent.</strong> Once your account has been deleted, it cannot be recovered. All your data, matches, messages, and profile information will be gone for good. Please be certain before you submit your request.</p>
+      </div>
+    </div>
+
+  </div><!-- /page-delete -->
+
 </main>
 
 <footer>
@@ -658,18 +805,14 @@
 
 <script>
   function switchTab(tab) {
-    // Update buttons
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById('tab-' + tab).classList.add('active');
 
-    // Update pages
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + tab).classList.add('active');
 
-    // Scroll to top of content
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Move pill
     movePill(tab);
   }
 
@@ -683,13 +826,17 @@
     pill.style.width = btnRect.width + 'px';
   }
 
-  // Init pill position on load
   window.addEventListener('load', () => movePill('privacy'));
   window.addEventListener('resize', () => {
     const active = document.querySelector('.tab-btn.active');
     const tab = active.id.replace('tab-', '');
     movePill(tab);
   });
+
+  // Support direct linking to delete tab via URL hash
+  if (window.location.hash === '#delete') {
+    switchTab('delete');
+  }
 </script>
 
 </body>
